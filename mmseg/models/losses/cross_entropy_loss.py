@@ -39,7 +39,7 @@ def cross_entropy(pred,
             only averaged over non-ignored targets. Default: False.
             `New in version 0.23.0.`
     """
-
+    
     # class_weight is a manual rescaling weight given to each class.
     # If given, has to be a Tensor of size C element-wise losses
     loss = F.cross_entropy(

@@ -208,7 +208,7 @@ class CustomDataset(Dataset):
             dict: Training/test data (with annotation if `test_mode` is set
                 False).
         """
-
+        # print('gettttttttttttttttttttttttttttttttttttttttttttt')
         if self.test_mode:
             return self.prepare_test_img(idx)
         else:
@@ -229,6 +229,16 @@ class CustomDataset(Dataset):
         ann_info = self.get_ann_info(idx)
         results = dict(img_info=img_info, ann_info=ann_info)
         self.pre_pipeline(results)
+        # print('use this?????????????????????????????????????????????')
+        # print(results)
+        # print(self.pipeline)
+        # print('pre_pipeline = ', results)
+        # test = self.pipeline(results)
+        # print('post_pipeline = ', test)
+        # print(test['img'][0].shape)
+        # print(test['gt_semantic_seg'][0].shape)
+        # import sys
+        # sys.exit(0)
         return self.pipeline(results)
 
     def prepare_test_img(self, idx):
@@ -253,10 +263,24 @@ class CustomDataset(Dataset):
 
     def get_gt_seg_map_by_idx(self, index):
         """Get one ground truth segmentation map for evaluation."""
+        img_info = self.img_infos[index]
         ann_info = self.get_ann_info(index)
-        results = dict(ann_info=ann_info)
+        print('111111111111111111111111111111111111111')
+        results = dict(img_info=img_info, ann_info=ann_info)
         self.pre_pipeline(results)
+        # print(results)
         self.gt_seg_map_loader(results)
+        # print(results)
+        # print(results['gt_semantic_seg'])
+        # print(results['gt_semantic_seg'].shape)
+        # print(np.unique(results['gt_semantic_seg']))
+        # haha = self.pipeline(results)
+        # print(haha)
+        # print(haha['gt_semantic_seg'])
+        # print(haha['gt_semantic_seg'][0].shape)
+        # print(np.unique(haha['gt_semantic_seg'][0]))
+        # import sys
+        # sys.exit(0)
         return results['gt_semantic_seg']
 
     def get_gt_seg_maps(self, efficient_test=None):
@@ -274,7 +298,7 @@ class CustomDataset(Dataset):
             self.gt_seg_map_loader(results)
             yield results['gt_semantic_seg']
 
-    def pre_eval(self, preds, indices):
+    def pre_eval(self, preds, indices, gt_seg_map=None):
         """Collect eval result from each iteration.
 
         Args:
@@ -294,9 +318,20 @@ class CustomDataset(Dataset):
             preds = [preds]
 
         pre_eval_results = []
-
+        
         for pred, index in zip(preds, indices):
-            seg_map = self.get_gt_seg_map_by_idx(index)
+            # print(pred)
+            # print(pred.shape)
+            # print(np.unique(pred))
+            # seg_map = self.get_gt_seg_map_by_idx(index)
+            seg_map = gt_seg_map
+            # print(type(seg_map))
+            # print(seg_map)
+            # print(seg_map.shape)
+            # print(np.unique(seg_map))
+            # print('*****************************************************')
+            # import sys
+            # sys.exit(0)
             pre_eval_results.append(
                 intersect_and_union(
                     pred,
@@ -419,6 +454,11 @@ class CustomDataset(Dataset):
                 results, str):
             if gt_seg_maps is None:
                 gt_seg_maps = self.get_gt_seg_maps()
+                # print(gt_seg_maps)
+                # print(gt_seg_maps.shape)
+                # print(np.unique(gt_seg_maps))
+                # import sys
+                # sys.exit(0)
             num_classes = len(self.CLASSES)
             ret_metrics = eval_metrics(
                 results,

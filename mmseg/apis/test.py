@@ -87,21 +87,47 @@ def single_gpu_test(model,
     loader_indices = data_loader.batch_sampler
 
     for batch_indices, data in zip(loader_indices, data_loader):
+        # print('data', data)
+        # print(data['img'][0])
+        # print(data['img'][0].shape)
+        # print(data['gt_semantic_seg'][0])
+        # print(data['gt_semantic_seg'][0].shape)
+        # print(torch.unique(data['gt_semantic_seg'][0]))
+        gt = data.pop('gt_semantic_seg')[0][0][0].cpu().numpy()
         with torch.no_grad():
-            result = model(return_loss=False, **data)
+            result = model(return_loss=False, rescale=False, **data) # rescale=True
+            # print('here',result)
+            # print(result[0].shape)
+            # import sys
+            # sys.exit(0)
 
         if show or out_dir:
             img_tensor = data['img'][0]
             img_metas = data['img_metas'][0].data[0]
+            # print(img_tensor)
+            # print(img_tensor.shape)
+            # print(img_metas)
             imgs = tensor2imgs(img_tensor, **img_metas[0]['img_norm_cfg'])
+            # print(imgs[0])
+            # print(imgs[0].shape)
             assert len(imgs) == len(img_metas)
 
             for img, img_meta in zip(imgs, img_metas):
-                h, w, _ = img_meta['img_shape']
+                # h, w, _ = img_meta['img_shape']
+                h, w, _ = img_meta['pad_shape']
+                # print(h, w, _)
                 img_show = img[:h, :w, :]
+                # print(img_show)
+                # print(img_show.shape)
 
                 ori_h, ori_w = img_meta['ori_shape'][:-1]
-                img_show = mmcv.imresize(img_show, (ori_w, ori_h))
+                # img_show = mmcv.imresize(img_show, (ori_w, ori_h))
+                # print(ori_h, ori_w)
+                # print(img_show)
+                # print(img_show.shape)
+                # print(result[0].shape)
+                # import sys
+                # sys.exit(0)
 
                 if out_dir:
                     out_file = osp.join(out_dir, img_meta['ori_filename'])
@@ -122,10 +148,12 @@ def single_gpu_test(model,
         if format_only:
             result = dataset.format_results(
                 result, indices=batch_indices, **format_args)
+        # result = [_.astype(np.uint8) for _ in result] #################################### <<<<<<<<<<<<<<<<<<<<<<<<<<<
         if pre_eval:
             # TODO: adapt samples_per_gpu > 1.
             # only samples_per_gpu=1 valid now
-            result = dataset.pre_eval(result, indices=batch_indices)
+            # print('go!!!!!!!!!!!!')
+            result = dataset.pre_eval(result, indices=batch_indices, gt_seg_map=gt)
             results.extend(result)
         else:
             results.extend(result)

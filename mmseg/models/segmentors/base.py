@@ -69,8 +69,12 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
                 augs (multiscale, flip, etc.) and the inner list indicates
                 images in a batch.
         """
+        # print('use forward_test ****************************************')
         for var, name in [(imgs, 'imgs'), (img_metas, 'img_metas')]:
             if not isinstance(var, list):
+                # imgs = [imgs] ######################### <<<<<<<<<<<<<<<<<<<<<<
+                # img_metas = [img_metas]
+                # gt_semantic_seg = [gt_semantic_seg]
                 raise TypeError(f'{name} must be a list, but got '
                                 f'{type(var)}')
 
@@ -80,12 +84,17 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
                              f'num of image meta ({len(img_metas)})')
         # all images in the same aug batch all of the same ori_shape and pad
         # shape
+        # print(img_metas)
         for img_meta in img_metas:
+            # print(img_meta)
             ori_shapes = [_['ori_shape'] for _ in img_meta]
+            # print(ori_shapes)
             assert all(shape == ori_shapes[0] for shape in ori_shapes)
             img_shapes = [_['img_shape'] for _ in img_meta]
+            # print(img_shapes)
             assert all(shape == img_shapes[0] for shape in img_shapes)
             pad_shapes = [_['pad_shape'] for _ in img_meta]
+            # print(pad_shapes)
             assert all(shape == pad_shapes[0] for shape in pad_shapes)
 
         if num_augs == 1:

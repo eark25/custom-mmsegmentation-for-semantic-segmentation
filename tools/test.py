@@ -147,7 +147,7 @@ def main():
         ]
         cfg.data.test.pipeline[1].flip = True
     cfg.model.pretrained = None
-    cfg.data.test.test_mode = True
+    cfg.data.test.test_mode = False ########################### <<<<<<<<<<<<<<<<<<<<<<<<<
 
     if args.gpu_id is not None:
         cfg.gpu_ids = [args.gpu_id]
@@ -196,7 +196,9 @@ def main():
         # cfg.gpus will be ignored if distributed
         num_gpus=len(cfg.gpu_ids),
         dist=distributed,
-        shuffle=False)
+        shuffle=False,
+        pin_memory=False,
+        persistent_workers=False)
     # The overall dataloader settings
     loader_cfg.update({
         k: v

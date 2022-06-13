@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import random
+from unittest import loader
 import warnings
 
 import mmcv
@@ -15,6 +16,8 @@ from mmseg import digit_version
 from mmseg.core import DistEvalHook, EvalHook, build_optimizer
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import find_latest_checkpoint, get_root_logger
+
+import sys
 
 
 def init_random_seed(seed=None, device='cuda'):
@@ -85,7 +88,9 @@ def train_segmentor(model,
         num_gpus=len(cfg.gpu_ids),
         dist=distributed,
         seed=cfg.seed,
-        drop_last=True)
+        drop_last=True,
+        pin_memory=False,
+        persistent_workers=False)
     # The overall dataloader settings
     loader_cfg.update({
         k: v
@@ -94,10 +99,9 @@ def train_segmentor(model,
             'test_dataloader'
         ]
     })
-
     # The specific dataloader settings
     train_loader_cfg = {**loader_cfg, **cfg.data.get('train_dataloader', {})}
-    data_loaders = [build_dataloader(ds, **train_loader_cfg) for ds in dataset]
+    data_loaders = [build_dataloader(ds, **train_loader_cfg) for ds in dataset] # [train_loader, val_loader]
 
     # put model on gpus
     if distributed:
@@ -149,7 +153,8 @@ def train_segmentor(model,
 
     # register eval hooks
     if validate:
-        val_dataset = build_dataset(cfg.data.val, dict(test_mode=True))
+        val_dataset = build_dataset(cfg.data.val)#, dict(test_mode=True))
+        # val_dataset = dataset[1] #######################<<<<<<<<<<<<<<
         # The specific dataloader settings
         val_loader_cfg = {
             **loader_cfg,
@@ -188,4 +193,11 @@ def train_segmentor(model,
         runner.resume(cfg.resume_from)
     elif cfg.load_from:
         runner.load_checkpoint(cfg.load_from)
-    runner.run(data_loaders, cfg.workflow)
+    # runner.run(data_loaders, cfg.workflow)
+
+    try: ################################# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        runner.run(data_loaders, cfg.workflow)
+    except KeyboardInterrupt:
+        runner.save_checkpoint(cfg.work_dir, 'INTERRUPTED_at_epoch{}.pth')
+        runner.logger.info('Saved interrupt')
+        sys.exit(0)
