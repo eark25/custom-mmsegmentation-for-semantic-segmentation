@@ -134,7 +134,7 @@ work_dir = '/root/mmsegmentation/tutorial'
 runner = dict(type='EpochBasedRunner', max_epochs=300)
 log_config = dict(interval = 151,
     hooks=[
-        dict(type='TextLoggerHook', by_epoch=True),
+        # dict(type='TextLoggerHook', by_epoch=True),
         # dict(type='TensorboardLoggerHook'),
         dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='DeepLabv3+', resume='allow', anonymous='must'))
     ])
@@ -153,4 +153,4 @@ seed = 0
 set_random_seed(0, deterministic=False)
 gpu_ids = range(3, 4)
 
-workflow = [('train', 1), ('val', 1)]
+workflow = [('train', 1)] #, ('val', 1)]
