@@ -1,32 +1,24 @@
 from mmseg.apis import set_random_seed
 
 # # hr18
-# _base_ = [
-#     '../_base_/models/fcn_hr18.py', '../_base_/datasets/loveda.py',
-#     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
-# ]
+_base_ = [
+    '../_base_/models/fcn_hr18.py', '../_base_/datasets/ade20k.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+]
 
 # # Since we use only one GPU, BN is used instead of SyncBN
 # norm_cfg = dict(type='BN', requires_grad=True)
 
 # model = dict(decode_head=dict(num_classes=7))
 
-_base_ = './fcn_hr18_512x512_80k_ade20k.py'
+# _base_ = './fcn_hr18_512x512_80k_ade20k.py'
 
 # Since we use only one GPU, BN is used instead of SyncBN
 norm_cfg = dict(type='BN', requires_grad=True)
 
 model = dict(
-    pretrained='open-mmlab://msra/hrnetv2_w48',
-    backbone=dict(
-        extra=dict(
-            stage2=dict(num_channels=(48, 96)),
-            stage3=dict(num_channels=(48, 96, 192)),
-            stage4=dict(num_channels=(48, 96, 192, 384)))),
     decode_head=dict(
         num_classes=6,
-        in_channels=[48, 96, 192, 384],
-        channels=sum([48, 96, 192, 384]),
         norm_cfg=norm_cfg,
         ignore_index=255,
         loss_decode=[dict(type='CrossEntropyLoss', loss_name='loss_ce', loss_weight=1.0, avg_non_ignore=True),

@@ -56,19 +56,19 @@ def main():
     if args.batch_size:
         cfg.optimizer_config.cumulative_iters = int(args.batch_size / cfg.data.samples_per_gpu)
     if args.backbone:
-        if args.backbone == 'r50':
-            cfg.model.pretrained = 'open-mmlab://resnet50_v1c'
-            cfg.model.backbone.depth = 50
-        if args.backbone == 'r101':
-            cfg.model.pretrained = 'open-mmlab://resnet101_v1c'
-            cfg.model.backbone.depth = 101
+        if args.backbone == 'w18':
+            cfg.model.pretrained='open-mmlab://msra/hrnetv2_w18'
+        if args.backbone == 'w48':
+            cfg.model.pretrained='open-mmlab://msra/hrnetv2_w48'
+            cfg.model.backbone.extra.stage2.num_channels=(48, 96)
+            cfg.model.backbone.extra.stage3.num_channels=(48, 96, 192)
+            cfg.model.backbone.extra.stage4.num_channels=(48, 96, 192, 384)
+            cfg.model.decode_head.in_channels=[48, 96, 192, 384]
+            cfg.model.decode_head.channels=sum([48, 96, 192, 384])
     if args.ignore_bg:
         cfg.model.decode_head.ignore_index = 0
         cfg.model.decode_head.loss_decode[0].avg_non_ignore = True
         cfg.model.decode_head.loss_decode[1].ignore_index = 0
-        cfg.model.auxiliary_head.ignore_index = 0
-        cfg.model.auxiliary_head.loss_decode[0].avg_non_ignore = True
-        cfg.model.auxiliary_head.loss_decode[1].ignore_index = 0
         cfg.train_pipeline[8].seg_pad_val = 0
         cfg.val_pipeline[6].seg_pad_val = 0
         cfg.try_pipeline[2].transforms[2].seg_pad_val = 0
