@@ -17,6 +17,7 @@ _base_ = [
 norm_cfg = dict(type='BN', requires_grad=True)
 
 model = dict(
+    backbone=dict(norm_cfg=norm_cfg),
     decode_head=dict(
         num_classes=6,
         norm_cfg=norm_cfg,
@@ -98,7 +99,7 @@ try_pipeline = [
 ]
 
 data = dict(
-    samples_per_gpu=4,
+    samples_per_gpu=2,
     workers_per_gpu=1,
     train=dict(
         type=dataset_type,
@@ -130,21 +131,26 @@ data = dict(
 # Set up working dir to save files and logs.
 work_dir = '/root/mmsegmentation/tutorial'
 
-runner = dict(type='EpochBasedRunner', max_epochs=1000)
-log_config = dict(interval = 1)
-evaluation = dict(interval = 1, save_best='mIoU', max_keep_ckpts=1, pre_eval=True)
-checkpoint_config = dict(by_epoch=True, interval = -1)
+runner = dict(type='EpochBasedRunner', max_epochs=300)
+log_config = dict(interval = 151,
+    hooks=[
+        # dict(type='TextLoggerHook', by_epoch=True),
+        # dict(type='TensorboardLoggerHook'),
+        dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='hrnet_sweep', resume='allow', anonymous='must'))
+    ])
+evaluation = dict(interval = 1, pre_eval=True) #, save_best='mIoU', max_keep_ckpts=1)
+checkpoint_config = dict(by_epoch=True, interval = -1, save_last = False)
 
 # optimizer
-optimizer = dict(type='SGD', lr=1, momentum=0.9, weight_decay=1e-8)
+optimizer = dict(type='SGD', lr=1e-1, momentum=0.9, weight_decay=1e-8)
 optimizer_config = dict(type='GradientCumulativeOptimizerHook', cumulative_iters=8)
 
 # learning policy
-lr_config = dict(policy='poly', power=0.9, min_lr=1, by_epoch=True)
+lr_config = dict(policy='poly', power=0.9, min_lr=1e-1, by_epoch=True)
 
 # Set seed to facitate reproducing the result
 seed = 0
 set_random_seed(0, deterministic=False)
-gpu_ids = range(3, 4)
+gpu_ids = range(2, 3)
 
-workflow = [('train', 1), ('val', 1)]
+workflow = [('train', 1)] # , ('val', 1)]

@@ -48,7 +48,7 @@ def get_args():
 def main():
     args = get_args()
 
-    cfg = Config.fromfile('../configs/deeplabv3plus/myhrnet.py')
+    cfg = Config.fromfile('../configs/hrnet/myhrnet.py')
 
     if args.learning_rate:
         cfg.optimizer.lr = args.learning_rate

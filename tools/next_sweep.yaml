@@ -1,4 +1,6 @@
-program: train_args.py
+entity: eark25
+project: hrnet_sweep
+program: train_args_hrnet.py
 method: random
 metric:
   goal: maximize
@@ -9,7 +11,7 @@ parameters:
   batch_size:
     values: [4, 8, 16, 32]
   backbone:
-    values: ['r50', 'r101']
+    values: ['w18', 'w48']
   ignore_bg:
     values: [True, False]
   crop_size:
@@ -19,6 +21,4 @@ parameters:
   momentum:
     values: [0.8, 0.9, 0.95]
   weight_decay:
-    values: [1e-8]
-
-no need val workflow and textlogging
+    values: [1e-8, 1e-4, 1e-2]

@@ -8,7 +8,7 @@ _wandb:
     is_jupyter_run: false
     is_kaggle_kernel: false
     python_version: 3.8.10
-    start_time: 1655233054
+    start_time: 1655271333
     t:
       1:
       - 1
@@ -16,14 +16,7 @@ _wandb:
       - 41
       - 55
       - 60
-      2:
-      - 1
-      - 37
-      - 41
-      - 55
-      - 60
       3:
-      - 2
       - 5
       4: 3.8.10
       5: 0.12.18
@@ -31,25 +24,25 @@ _wandb:
       - 5
 backbone:
   desc: null
-  value: r50
+  value: w48
 batch_size:
   desc: null
-  value: 32
+  value: 4
 crop_size:
   desc: null
-  value: 1024
+  value: 512
 ignore_bg:
   desc: null
-  value: true
+  value: false
 keep_ratio:
   desc: null
   value: false
 learning_rate:
   desc: null
-  value: 0.0001
+  value: 0.001
 momentum:
   desc: null
-  value: 0.8
+  value: 0.9
 weight_decay:
   desc: null
-  value: 0.0001
+  value: 0.01
