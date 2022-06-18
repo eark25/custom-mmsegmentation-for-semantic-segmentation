@@ -1,0 +1,24 @@
+entity: eark25
+project: deeplab_sweep_2
+program: train_args.py
+method: random
+metric:
+  goal: maximize
+  name: val/mIoU
+parameters:
+  learning_rate:
+    values: [1e-1, 1e-2, 1e-3, 1e-4]
+  batch_size:
+    values: [4, 8, 16, 32]
+  backbone:
+    values: ['r50', 'r101']
+  ignore_bg:
+    values: [True, False]
+  crop_size:
+    values: [512]
+  keep_ratio:
+    values: [True, False]
+  momentum:
+    values: [0.9]
+  weight_decay:
+    values: [1e-8]

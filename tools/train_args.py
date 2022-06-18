@@ -69,13 +69,17 @@ def main():
         cfg.model.auxiliary_head.ignore_index = 0
         cfg.model.auxiliary_head.loss_decode[0].avg_non_ignore = True
         cfg.model.auxiliary_head.loss_decode[1].ignore_index = 0
-        cfg.train_pipeline[8].seg_pad_val = 0
+        cfg.data.train.pipeline[3].ignore_index = 0
+        cfg.data.train.pipeline[5].seg_pad_val = 0
+        cfg.data.train.pipeline[8].seg_pad_val = 0
+        cfg.val_pipeline[3].ignore_index = 0
         cfg.val_pipeline[6].seg_pad_val = 0
-        cfg.try_pipeline[2].transforms[2].seg_pad_val = 0
-    if args.crop_size:
-        cfg.crop_size = (args.crop_size, args.crop_size)
+        cfg.data.val.pipeline[2].transforms[0].ignore_index = 0
+        cfg.data.val.pipeline[2].transforms[2].seg_pad_val = 0
+    # if args.crop_size:
+    #     cfg.crop_size = (args.crop_size, args.crop_size)
     if args.keep_ratio:
-        cfg.train_pipeline[2].keep_ratio = True
+        cfg.data.train.pipeline[2].keep_ratio = True
         # cfg.val_pipeline[2].keep_ratio = True
     # if args.lr_scheduler:
     if args.momentum:

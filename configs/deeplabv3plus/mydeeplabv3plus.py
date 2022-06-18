@@ -136,7 +136,7 @@ log_config = dict(interval = 151,
     hooks=[
         # dict(type='TextLoggerHook', by_epoch=True),
         # dict(type='TensorboardLoggerHook'),
-        dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='DeepLabv3+', resume='allow', anonymous='must'))
+        dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='deeplab_sweep_2', resume='allow', anonymous='must'))
     ])
 evaluation = dict(interval = 1, pre_eval=True) # save_best='mIoU', max_keep_ckpts=1,
 checkpoint_config = dict(by_epoch=True, interval = -1, save_last = False)
