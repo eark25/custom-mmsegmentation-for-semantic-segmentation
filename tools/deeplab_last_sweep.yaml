@@ -1,0 +1,24 @@
+entity: eark25
+project: deeplab_last_sweep
+program: train_args.py
+method: grid
+metric:
+  goal: maximize
+  name: val/mIoU
+parameters:
+  learning_rate:
+    values: [1e-2, 1e-3]
+  batch_size:
+    values: [8, 16]
+  backbone:
+    values: ['r50', 'r101']
+  ignore_bg:
+    values: [False]
+  crop_size:
+    values: [512]
+  keep_ratio:
+    values: [True]
+  momentum:
+    values: [0.9]
+  weight_decay:
+    values: [1e-8]

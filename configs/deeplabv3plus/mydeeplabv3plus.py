@@ -107,21 +107,21 @@ data = dict(
         img_dir=img_dir,
         ann_dir=ann_dir,
         pipeline=train_pipeline,
-        split='splits/train.txt'),
+        split='new_splits/train.txt'),
     val=dict(
         type=dataset_type,
         data_root=data_root,
         img_dir=img_dir,
         ann_dir=ann_dir,
         pipeline=try_pipeline,
-        split='splits/val.txt'),
+        split='new_splits/val.txt'),
     test=dict(
         type=dataset_type,
         data_root=data_root,
         img_dir=img_dir,
         ann_dir=ann_dir,
         pipeline=try_pipeline,
-        split='splits/val.txt')
+        split='new_splits/val.txt')
     )
 
 # We can still use the pre-trained Mask RCNN model though we do not need to
