@@ -1,0 +1,26 @@
+entity: eark25
+project: hrnet_last_run
+program: train_args_hrnet.py
+method: grid
+metric:
+  goal: maximize
+  name: val/mIoU
+parameters:
+  learning_rate:
+    values: [1e-2]
+  batch_size:
+    values: [8]
+  backbone:
+    values: ['w48']
+  ignore_bg:
+    values: [False]
+  crop_size:
+    values: [512]
+  keep_ratio:
+    values: [True]
+  momentum:
+    values: [0.9]
+  weight_decay:
+    values: [1e-8]
+
+--learning_rate 1e-2 --batch_size 8 --backbone 'w48' --ignore_bg False --crop_size 512 --keep_ratio True --momentum 0.9 --weight_decay 1e-8
