@@ -74,6 +74,7 @@ def main():
         cfg.data.train.pipeline[8].seg_pad_val = 0
         cfg.val_pipeline[3].ignore_index = 0
         cfg.val_pipeline[6].seg_pad_val = 0
+        cfg.data.val.type='BuildingFacadeBGDataset'
         cfg.data.val.pipeline[2].transforms[0].ignore_index = 0
         cfg.data.val.pipeline[2].transforms[2].seg_pad_val = 0
     # if args.crop_size:
