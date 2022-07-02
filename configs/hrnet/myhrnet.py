@@ -129,16 +129,16 @@ data = dict(
 # load_from = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
 # Set up working dir to save files and logs.
-work_dir = '/root/mmsegmentation/hrnet_last_run'
+work_dir = '/root/mmsegmentation/hrnet_test_run'
 
 runner = dict(type='EpochBasedRunner', max_epochs=1000)
 log_config = dict(interval = 1,
     hooks=[
         dict(type='TextLoggerHook', by_epoch=True),
         # dict(type='TensorboardLoggerHook'),
-        dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='hrnet_last_run', resume='allow', anonymous='must'))
+        dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='hrnet_test_run', resume='allow', anonymous='must'))
     ])
-evaluation = dict(interval = 1, pre_eval=True, save_best='mIoU', max_keep_ckpts=1) #, save_best='mIoU', max_keep_ckpts=1)
+evaluation = dict(interval = 1, pre_eval=True) #, save_best='mIoU', max_keep_ckpts=1)
 checkpoint_config = dict(by_epoch=True, interval = -1, save_last = False)
 
 # optimizer

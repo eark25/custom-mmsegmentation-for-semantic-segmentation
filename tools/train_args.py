@@ -50,6 +50,8 @@ def main():
 
     cfg = Config.fromfile('../configs/deeplabv3plus/mydeeplabv3plus.py')
 
+    # print(args.ignore_bg)
+
     if args.learning_rate:
         cfg.optimizer.lr = args.learning_rate
         cfg.lr_config.min_lr = args.learning_rate
@@ -76,8 +78,8 @@ def main():
         cfg.val_pipeline[6].seg_pad_val = 0
         cfg.data.val.pipeline[2].transforms[0].ignore_index = 0
         cfg.data.val.pipeline[2].transforms[2].seg_pad_val = 0
-    # if args.crop_size:
-    #     cfg.crop_size = (args.crop_size, args.crop_size)
+    if args.crop_size:
+        cfg.crop_size = (args.crop_size, args.crop_size)
     if args.keep_ratio:
         cfg.data.train.pipeline[2].keep_ratio = True
         # cfg.val_pipeline[2].keep_ratio = True
@@ -89,6 +91,10 @@ def main():
 
     ######################################################################
     # wandb.init(project='DeepLabv3+', resume='allow', anonymous='must')
+
+    # print(cfg.pretty_text)
+    # import sys
+    # sys.exit(0)
 
     # Build the dataset
     datasets = [build_dataset(cfg.data.train)]

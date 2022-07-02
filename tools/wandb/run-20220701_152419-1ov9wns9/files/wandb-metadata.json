@@ -1,0 +1,41 @@
+{
+    "os": "Linux-4.15.0-184-generic-x86_64-with-glibc2.29",
+    "python": "3.8.10",
+    "heartbeatAt": "2022-07-01T15:24:21.121639",
+    "startedAt": "2022-07-01T15:24:19.070319",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 2080 Ti",
+    "gpu_count": 4,
+    "cpu_count": 32,
+    "cuda": null,
+    "args": [
+        "--learning_rate",
+        "1e-2",
+        "--batch_size",
+        "8",
+        "--backbone",
+        "w48",
+        "--ignore_bg",
+        "False",
+        "--crop_size",
+        "512",
+        "--keep_ratio",
+        "True",
+        "--momentum",
+        "0.9",
+        "--weight_decay",
+        "1e-8"
+    ],
+    "state": "running",
+    "program": "train_args_hrnet.py",
+    "codePath": "tools/train_args_hrnet.py",
+    "git": {
+        "remote": "https://eark25:@github.com/eark25/mmsegmentation.git",
+        "commit": "058e5310ac4ce6193ccc556e7d2cc61fe63f66e8"
+    },
+    "email": "eark25@hotmail.com",
+    "root": "/root/mmsegmentation",
+    "host": "5c0d87a279a0",
+    "username": "root",
+    "executable": "/usr/bin/python"
+}
