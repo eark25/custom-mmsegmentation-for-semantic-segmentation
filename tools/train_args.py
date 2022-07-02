@@ -51,6 +51,7 @@ def main():
     cfg = Config.fromfile('../configs/deeplabv3plus/mydeeplabv3plus.py')
 
     # print(args.ignore_bg)
+    # print(args.keep_ratio)
 
     if args.learning_rate:
         cfg.optimizer.lr = args.learning_rate
@@ -76,11 +77,11 @@ def main():
         cfg.data.train.pipeline[8].seg_pad_val = 0
         cfg.val_pipeline[3].ignore_index = 0
         cfg.val_pipeline[6].seg_pad_val = 0
+        cfg.data.val.type='BuildingFacadeBGDataset'
         cfg.data.val.pipeline[2].transforms[0].ignore_index = 0
         cfg.data.val.pipeline[2].transforms[2].seg_pad_val = 0
-        cfg.data.val.type='BuildingFacadeBGDataset'
-    if args.crop_size:
-        cfg.crop_size = (args.crop_size, args.crop_size)
+    # if args.crop_size:
+    #     cfg.crop_size = (args.crop_size, args.crop_size)
     if args.keep_ratio:
         cfg.data.train.pipeline[2].keep_ratio = True
         # cfg.val_pipeline[2].keep_ratio = True
