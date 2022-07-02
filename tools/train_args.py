@@ -78,6 +78,7 @@ def main():
         cfg.val_pipeline[6].seg_pad_val = 0
         cfg.data.val.pipeline[2].transforms[0].ignore_index = 0
         cfg.data.val.pipeline[2].transforms[2].seg_pad_val = 0
+        cfg.data.val.type='BuildingFacadeBGDataset'
     if args.crop_size:
         cfg.crop_size = (args.crop_size, args.crop_size)
     if args.keep_ratio:

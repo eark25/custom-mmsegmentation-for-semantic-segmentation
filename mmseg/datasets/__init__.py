@@ -20,6 +20,7 @@ from .stare import STAREDataset
 from .voc import PascalVOCDataset
 
 from .buildingfacade import BuildingFacadeDataset
+from .buildingfacade_for_ignore_bg import BuildingFacadeBGDataset
 
 __all__ = [
     'CustomDataset', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',
@@ -28,5 +29,5 @@ __all__ = [
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
     'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
     'COCOStuffDataset', 'LoveDADataset', 'MultiImageMixDataset',
-    'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset', 'BuildingFacadeDataset'
+    'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset', 'BuildingFacadeDataset', 'BuildingFacadeBGDataset'
 ]
