@@ -129,16 +129,16 @@ data = dict(
 # load_from = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
 # Set up working dir to save files and logs.
-work_dir = '/root/mmsegmentation/deeplab_next_sweep'
+work_dir = '/root/mmsegmentation/deeplab_last_run'
 
-runner = dict(type='EpochBasedRunner', max_epochs=300)
-log_config = dict(interval = 151,
+runner = dict(type='EpochBasedRunner', max_epochs=1000)
+log_config = dict(interval = 1,
     hooks=[
-        # dict(type='TextLoggerHook', by_epoch=True),
+        dict(type='TextLoggerHook', by_epoch=True),
         # dict(type='TensorboardLoggerHook'),
-        dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='deeplab_next_sweep', resume='allow', anonymous='must'))
+        dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='deeplab_last_run', resume='allow', anonymous='must'))
     ])
-evaluation = dict(interval = 1, pre_eval=True) # save_best='mIoU', max_keep_ckpts=1,
+evaluation = dict(interval = 1, pre_eval=True, save_best='mIoU', max_keep_ckpts=1)
 checkpoint_config = dict(by_epoch=True, interval = -1, save_last = False)
 
 # optimizer
@@ -151,6 +151,6 @@ lr_config = dict(policy='poly', power=0.9, min_lr=1e-1, by_epoch=True)
 # Set seed to facitate reproducing the result
 seed = 0
 set_random_seed(0, deterministic=False)
-gpu_ids = range(1, 2)
+gpu_ids = range(3, 4)
 
-workflow = [('train', 1)] #, ('val', 1)]
+workflow = [('train', 1), ('val', 1)]
