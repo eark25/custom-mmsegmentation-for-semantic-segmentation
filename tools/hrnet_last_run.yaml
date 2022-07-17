@@ -24,3 +24,5 @@ parameters:
     values: [1e-8]
 
 --learning_rate 1e-2 --batch_size 8 --backbone 'w48' --ignore_bg False --crop_size 512 --keep_ratio True --momentum 0.9 --weight_decay 1e-8
+
+python train_args_hrnet.py --backbone=w18 --batch_size=8 --crop_size=512 --ignore_bg=True --keep_ratio= --learning_rate=0.1 --momentum=0.9 --weight_decay=1e-08
