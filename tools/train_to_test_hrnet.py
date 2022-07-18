@@ -48,10 +48,7 @@ def get_args():
 def main():
     args = get_args()
 
-    cfg = Config.fromfile('../configs/deeplabv3plus/mydeeplabv3plus.py')
-
-    # print(args.ignore_bg)
-    # print(args.keep_ratio)
+    cfg = Config.fromfile('../configs/hrnet/myhrnet.py')
 
     if args.learning_rate:
         cfg.optimizer.lr = args.learning_rate
@@ -59,19 +56,19 @@ def main():
     if args.batch_size:
         cfg.optimizer_config.cumulative_iters = int(args.batch_size / cfg.data.samples_per_gpu)
     if args.backbone:
-        if args.backbone == 'r50':
-            cfg.model.pretrained = 'open-mmlab://resnet50_v1c'
-            cfg.model.backbone.depth = 50
-        if args.backbone == 'r101':
-            cfg.model.pretrained = 'open-mmlab://resnet101_v1c'
-            cfg.model.backbone.depth = 101
+        if args.backbone == 'w18':
+            cfg.model.pretrained='open-mmlab://msra/hrnetv2_w18'
+        if args.backbone == 'w48':
+            cfg.model.pretrained='open-mmlab://msra/hrnetv2_w48'
+            cfg.model.backbone.extra.stage2.num_channels=(48, 96)
+            cfg.model.backbone.extra.stage3.num_channels=(48, 96, 192)
+            cfg.model.backbone.extra.stage4.num_channels=(48, 96, 192, 384)
+            cfg.model.decode_head.in_channels=[48, 96, 192, 384]
+            cfg.model.decode_head.channels=sum([48, 96, 192, 384])
     if args.ignore_bg:
         cfg.model.decode_head.ignore_index = 0
         cfg.model.decode_head.loss_decode[0].avg_non_ignore = True
         cfg.model.decode_head.loss_decode[1].ignore_index = 0
-        cfg.model.auxiliary_head.ignore_index = 0
-        cfg.model.auxiliary_head.loss_decode[0].avg_non_ignore = True
-        cfg.model.auxiliary_head.loss_decode[1].ignore_index = 0
         cfg.data.train.pipeline[3].ignore_index = 0
         cfg.data.train.pipeline[5].seg_pad_val = 0
         cfg.data.train.pipeline[8].seg_pad_val = 0
@@ -94,33 +91,9 @@ def main():
     if args.weight_decay:
         cfg.optimizer.weight_decay = args.weight_decay
 
-    ######################################################################
-    # wandb.init(project='DeepLabv3+', resume='allow', anonymous='must')
+    print(cfg.pretty_text)
 
-    # print(cfg.pretty_text)
-    # import sys
-    # sys.exit(0)
-
-    # Build the dataset
-    datasets = [build_dataset(cfg.data.train)]
-
-    # for val loss
-    if len(cfg.workflow) == 2:
-        val_dataset = copy.deepcopy(cfg.data.val)
-        val_dataset.pipeline = cfg.val_pipeline
-        datasets.append(build_dataset(val_dataset))
-        # datasets.append(build_dataset(cfg.data.val))
-
-    # Build the detector
-    model = build_segmentor(cfg.model, train_cfg=cfg.get('train_cfg'), test_cfg=cfg.get('test_cfg'))
-
-    # Add an attribute for visualization convenience
-    model.CLASSES = datasets[0].CLASSES
-
-    # Create work_dir
-    mmcv.mkdir_or_exist(osp.abspath(cfg.work_dir))
-    train_segmentor(model, datasets, cfg, distributed=False, validate=True, meta=dict())
+    cfg.dump('/root/mmsegmentation/configs/hrnet/myhrnet_test.py')
 
 if __name__ == '__main__':
     main()
-

@@ -1,46 +1,27 @@
 norm_cfg = dict(type='BN', requires_grad=True)
 model = dict(
     type='EncoderDecoder',
-    pretrained='open-mmlab://msra/hrnetv2_w18',
+    pretrained='open-mmlab://resnet101_v1c',
     backbone=dict(
-        type='HRNet',
+        type='ResNetV1c',
+        depth=101,
+        num_stages=4,
+        out_indices=(0, 1, 2, 3),
+        dilations=(1, 1, 2, 4),
+        strides=(1, 2, 1, 1),
         norm_cfg=dict(type='BN', requires_grad=True),
         norm_eval=False,
-        extra=dict(
-            stage1=dict(
-                num_modules=1,
-                num_branches=1,
-                block='BOTTLENECK',
-                num_blocks=(4, ),
-                num_channels=(64, )),
-            stage2=dict(
-                num_modules=1,
-                num_branches=2,
-                block='BASIC',
-                num_blocks=(4, 4),
-                num_channels=(18, 36)),
-            stage3=dict(
-                num_modules=4,
-                num_branches=3,
-                block='BASIC',
-                num_blocks=(4, 4, 4),
-                num_channels=(18, 36, 72)),
-            stage4=dict(
-                num_modules=3,
-                num_branches=4,
-                block='BASIC',
-                num_blocks=(4, 4, 4, 4),
-                num_channels=(18, 36, 72, 144)))),
+        style='pytorch',
+        contract_dilation=True),
     decode_head=dict(
-        type='FCNHead',
-        in_channels=[18, 36, 72, 144],
-        in_index=(0, 1, 2, 3),
-        channels=270,
-        input_transform='resize_concat',
-        kernel_size=1,
-        num_convs=1,
-        concat_input=False,
-        dropout_ratio=-1,
+        type='DepthwiseSeparableASPPHead',
+        in_channels=2048,
+        in_index=3,
+        channels=512,
+        dilations=(1, 12, 24, 36),
+        c1_in_channels=256,
+        c1_channels=48,
+        dropout_ratio=0.1,
         num_classes=6,
         norm_cfg=dict(type='BN', requires_grad=True),
         align_corners=False,
@@ -54,6 +35,30 @@ model = dict(
                 type='DiceLoss',
                 loss_name='loss_dice',
                 loss_weight=3.0,
+                ignore_index=0)
+        ],
+        ignore_index=0),
+    auxiliary_head=dict(
+        type='FCNHead',
+        in_channels=1024,
+        in_index=2,
+        channels=256,
+        num_convs=1,
+        concat_input=False,
+        dropout_ratio=0.1,
+        num_classes=6,
+        norm_cfg=dict(type='BN', requires_grad=True),
+        align_corners=False,
+        loss_decode=[
+            dict(
+                type='CrossEntropyLoss',
+                loss_name='loss_ce',
+                loss_weight=0.4,
+                avg_non_ignore=True),
+            dict(
+                type='DiceLoss',
+                loss_name='loss_dice',
+                loss_weight=1.2,
                 ignore_index=0)
         ],
         ignore_index=0),
@@ -213,7 +218,7 @@ log_config = dict(
             type='WandbLoggerHook',
             by_epoch=True,
             init_kwargs=dict(
-                project='hrnet_last_run', resume='allow', anonymous='must'))
+                project='deeplab_last_run', resume='allow', anonymous='must'))
     ])
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
@@ -221,10 +226,10 @@ load_from = None
 resume_from = None
 workflow = [('train', 1), ('val', 1)]
 cudnn_benchmark = True
-optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=1e-08)
+optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=1e-08)
 optimizer_config = dict(
-    type='GradientCumulativeOptimizerHook', cumulative_iters=4)
-lr_config = dict(policy='poly', power=0.9, min_lr=0.1, by_epoch=True)
+    type='GradientCumulativeOptimizerHook', cumulative_iters=2)
+lr_config = dict(policy='poly', power=0.9, min_lr=0.001, by_epoch=True)
 checkpoint_config = dict(by_epoch=True, interval=-1, save_last=False)
 evaluation = dict(
     interval=1,
@@ -275,7 +280,7 @@ try_pipeline = [
             dict(type='Collect', keys=['img', 'gt_semantic_seg'])
         ])
 ]
-work_dir = '/root/mmsegmentation/hrnet_last_run'
+work_dir = '/root/mmsegmentation/deeplab_last_run'
 runner = dict(type='EpochBasedRunner', max_epochs=1000)
 seed = 0
-gpu_ids = range(0, 1)
+gpu_ids = range(3, 4)
