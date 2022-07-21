@@ -1,0 +1,20 @@
+{
+    "config": "/root/mmsegmentation/configs/hrnet/myhrnet_icy_test.py",
+    "metric": {
+        "aAcc": 0.7983,
+        "mIoU": 0.5951,
+        "mAcc": 0.7626000000000001,
+        "IoU.background": 0.4954999923706055,
+        "IoU.wall": 0.6934999847412109,
+        "IoU.floor": 0.557599983215332,
+        "IoU.column": 0.43720001220703125,
+        "IoU.opening": 0.7926999664306641,
+        "IoU.facade/deco": 0.5940999984741211,
+        "Acc.background": 0.77,
+        "Acc.wall": 0.8009999847412109,
+        "Acc.floor": 0.6669999694824219,
+        "Acc.column": 0.7073000335693359,
+        "Acc.opening": 0.8734999847412109,
+        "Acc.facade/deco": 0.7566000366210938
+    }
+}

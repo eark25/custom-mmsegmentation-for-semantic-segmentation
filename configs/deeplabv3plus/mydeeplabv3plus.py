@@ -151,6 +151,6 @@ lr_config = dict(policy='poly', power=0.9, min_lr=1e-1, by_epoch=True)
 # Set seed to facitate reproducing the result
 seed = 0
 set_random_seed(0, deterministic=False)
-gpu_ids = range(2, 3)
+gpu_ids = range(1, 2)
 
 workflow = [('train', 1), ('val', 1)]

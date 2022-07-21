@@ -1,0 +1,20 @@
+{
+    "config": "/root/mmsegmentation/configs/deeplabv3plus/mydeeplabv3plus_lyric_test.py",
+    "metric": {
+        "aAcc": 0.7795000000000001,
+        "mIoU": 0.5396,
+        "mAcc": 0.6829999999999999,
+        "IoU.background": 0.5420999908447266,
+        "IoU.wall": 0.6602999877929687,
+        "IoU.floor": 0.4361999893188477,
+        "IoU.column": 0.25809999465942385,
+        "IoU.opening": 0.7645999908447265,
+        "IoU.facade/deco": 0.5761999893188476,
+        "Acc.background": 0.7075,
+        "Acc.wall": 0.8163999938964843,
+        "Acc.floor": 0.5059999847412109,
+        "Acc.column": 0.5070999908447266,
+        "Acc.opening": 0.8490000152587891,
+        "Acc.facade/deco": 0.7119999694824218
+    }
+}

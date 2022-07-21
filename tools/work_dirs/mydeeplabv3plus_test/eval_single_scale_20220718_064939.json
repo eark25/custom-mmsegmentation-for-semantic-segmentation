@@ -1,0 +1,20 @@
+{
+    "config": "/root/mmsegmentation/configs/deeplabv3plus/mydeeplabv3plus_test.py",
+    "metric": {
+        "aAcc": 0.8131,
+        "mIoU": 0.596,
+        "mAcc": 0.7068000000000001,
+        "IoU.background": NaN,
+        "IoU.wall": 0.7344999694824219,
+        "IoU.floor": 0.44409999847412107,
+        "IoU.column": 0.4634000015258789,
+        "IoU.opening": 0.770199966430664,
+        "IoU.facade/deco": 0.5679000091552734,
+        "Acc.background": NaN,
+        "Acc.wall": 0.8620999908447265,
+        "Acc.floor": 0.5508000183105469,
+        "Acc.column": 0.5418999862670898,
+        "Acc.opening": 0.8472000122070312,
+        "Acc.facade/deco": 0.7322000122070312
+    }
+}

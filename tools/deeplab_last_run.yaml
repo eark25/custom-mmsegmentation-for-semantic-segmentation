@@ -28,7 +28,7 @@ parameters:
 1st
 python train_args.py --backbone=r101 --batch_size=4 --crop_size=512 --ignore_bg=True --keep_ratio= --learning_rate=0.001 --momentum=0.9 --weight_decay=1e-08
 
-3rd
+bg
 python train_args.py --backbone=r50 --batch_size=16 --crop_size=512 --ignore_bg= --keep_ratio=True --learning_rate=0.001 --momentum=0.9 --weight_decay=1e-08
 
 lyric-sweep-11

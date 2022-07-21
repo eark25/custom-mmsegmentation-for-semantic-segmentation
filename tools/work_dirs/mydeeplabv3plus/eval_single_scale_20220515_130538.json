@@ -1,0 +1,20 @@
+{
+    "config": "../configs/deeplabv3plus/mydeeplabv3plus.py",
+    "metric": {
+        "aAcc": 0.7965000000000001,
+        "mIoU": 0.6215999999999999,
+        "mAcc": 0.745,
+        "IoU.background": 0.6397000122070312,
+        "IoU.wall": 0.6625,
+        "IoU.floor": 0.5850999832153321,
+        "IoU.column": 0.44470001220703126,
+        "IoU.opening": 0.7591999816894531,
+        "IoU.facade/deco": 0.6381000137329101,
+        "Acc.background": 0.7786000061035157,
+        "Acc.wall": 0.8151999664306641,
+        "Acc.floor": 0.6766000366210938,
+        "Acc.column": 0.5797000122070313,
+        "Acc.opening": 0.8466999816894532,
+        "Acc.facade/deco": 0.7733999633789063
+    }
+}

@@ -91,11 +91,11 @@ def main():
     if args.weight_decay:
         cfg.optimizer.weight_decay = args.weight_decay
 
-    cfg.work_dir = '/root/mmsegmentation/hrnet_last_run_bg'
+    cfg.work_dir = '/root/mmsegmentation/hrnet_last_run_icy'
 
     print(cfg.pretty_text)
 
-    cfg.dump('/root/mmsegmentation/configs/hrnet/myhrnet_bg_test.py')
+    cfg.dump('/root/mmsegmentation/configs/hrnet/myhrnet_icy_test.py')
 
 if __name__ == '__main__':
     main()
