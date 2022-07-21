@@ -34,5 +34,8 @@ python train_args.py --backbone=r50 --batch_size=16 --crop_size=512 --ignore_bg=
 lyric-sweep-11
 python train_args.py --backbone=r50 --batch_size=32 --crop_size=512 --ignore_bg= --keep_ratio=True --learning_rate=0.01 --momentum=0.9 --weight_decay=1e-08
 
+firm-sweep-36
+python train_args.py --backbone=r101 --batch_size=4 --crop_size=512 --ignore_bg= --keep_ratio=True --learning_rate=0.001 --momentum=0.9 --weight_decay=1e-08
+
 2nd
 python train_args.py --backbone=r50 --batch_size=8 --crop_size=512 --ignore_bg=True --keep_ratio=True --learning_rate=0.001 --momentum=0.9 --weight_decay=1e-08
