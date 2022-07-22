@@ -94,11 +94,11 @@ def main():
     if args.weight_decay:
         cfg.optimizer.weight_decay = args.weight_decay
 
-    cfg.work_dir = '/root/mmsegmentation/deeplab_last_run_lyric'
+    cfg.work_dir = '/root/mmsegmentation/deeplab_last_run_firm'
 
     print(cfg.pretty_text)
 
-    cfg.dump('/root/mmsegmentation/configs/deeplabv3plus/mydeeplabv3plus_lyric_test.py')
+    cfg.dump('/root/mmsegmentation/configs/deeplabv3plus/mydeeplabv3plus_firm_test.py')
 
 if __name__ == '__main__':
     main()
