@@ -129,6 +129,7 @@ def show_result_pyplot(model,
         model = model.module
     img = model.show_result(
         img, result, palette=palette, show=False, opacity=opacity)
+    return img
     plt.figure(figsize=fig_size)
     plt.imshow(mmcv.bgr2rgb(img))
     plt.title(title)

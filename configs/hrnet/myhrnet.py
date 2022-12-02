@@ -33,9 +33,15 @@ data_root = '/root/mmsegmentation/data/buildingfacade'
 img_dir = 'imgs'
 ann_dir = 'all_new_masks'
 
+# img_norm_cfg = dict(
+#     mean=[255*0.4780, 255*0.4511, 255*0.4137],
+#     std=[255*0.2429, 255*0.2352, 255*0.2338],
+#     to_rgb=True
+# )
+
 img_norm_cfg = dict(
-    mean=[255*0.4780, 255*0.4511, 255*0.4137],
-    std=[255*0.2429, 255*0.2352, 255*0.2338],
+    mean=[255*0.485, 255*0.456, 255*0.406],
+    std=[255*0.229, 255*0.224, 255*0.225],
     to_rgb=True
 )
 
@@ -129,7 +135,7 @@ data = dict(
 # load_from = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
 # Set up working dir to save files and logs.
-work_dir = '/root/mmsegmentation/hrnet_final_run'
+work_dir = '/root/mmsegmentation/hrnet_imgnet_run'
 
 runner = dict(type='EpochBasedRunner', max_epochs=1000)
 log_config = dict(interval = 1,
