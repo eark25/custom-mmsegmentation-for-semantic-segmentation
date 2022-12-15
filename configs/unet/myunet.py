@@ -1,31 +1,60 @@
 from mmseg.apis import set_random_seed
 
-# # hr18
 _base_ = [
-    '../_base_/models/fcn_hr18.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 
-# # Since we use only one GPU, BN is used instead of SyncBN
-# norm_cfg = dict(type='BN', requires_grad=True)
-
-# model = dict(decode_head=dict(num_classes=7))
-
-# _base_ = './fcn_hr18_512x512_80k_ade20k.py'
-
-# Since we use only one GPU, BN is used instead of SyncBN
 norm_cfg = dict(type='BN', requires_grad=True)
 
 model = dict(
-    backbone=dict(norm_cfg=norm_cfg),
+    type='EncoderDecoder',
+    pretrained=None,
+    backbone=dict(
+        type='UNet',
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 1, 1, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        downsamples=(True, True, True, True),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1),
+        with_cp=False,
+        conv_cfg=None,
+        norm_cfg=norm_cfg,
+        act_cfg=dict(type='ReLU'),
+        upsample_cfg=dict(type='InterpConv'),
+        norm_eval=False),
     decode_head=dict(
+        type='FCNHead',
+        in_channels=64,
+        in_index=4,
+        channels=64,
+        num_convs=1,
+        concat_input=False,
+        dropout_ratio=0.1,
         num_classes=6,
         norm_cfg=norm_cfg,
-        ignore_index=255,
+        align_corners=False,
         loss_decode=[dict(type='CrossEntropyLoss', loss_name='loss_ce', loss_weight=1.0, avg_non_ignore=True),
-                    dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]
-        )
-)
+                    dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]),
+    auxiliary_head=dict(
+        type='FCNHead',
+        in_channels=128,
+        in_index=3,
+        channels=64,
+        num_convs=1,
+        concat_input=False,
+        dropout_ratio=0.1,
+        num_classes=6,
+        norm_cfg=norm_cfg,
+        align_corners=False,
+        loss_decode=[dict(type='CrossEntropyLoss', loss_name='loss_ce', loss_weight=0.4, avg_non_ignore=True),
+                    dict(type='DiceLoss', loss_name='loss_dice', loss_weight=1.2)]),
+    # model training and testing settings
+    train_cfg=dict(),
+    test_cfg=dict(mode='whole'))
 
 # Modify dataset type and path
 dataset_type = 'BuildingFacadeDataset'
@@ -49,7 +78,7 @@ crop_size = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
-    dict(type='CLAHE', clip_limit=2.0, tile_grid_size=(8, 8)),
+    dict(type='CLAHE', clip_limit=3.0, tile_grid_size=(8, 8)),
     dict(type='Resize', img_scale=None, multiscale_mode='range', ratio_range=(0.5, 2.0), keep_ratio=False),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', flip_ratio=0.5),
@@ -63,7 +92,7 @@ train_pipeline = [
 val_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
-    dict(type='CLAHE', clip_limit=2.0, tile_grid_size=(8, 8)),
+    dict(type='CLAHE', clip_limit=3.0, tile_grid_size=(8, 8)),
     dict(type='Resize', img_scale=None, ratio_range=(1.0, 1.0), keep_ratio=True),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', flip_ratio=0.0),
@@ -96,7 +125,7 @@ try_pipeline = [
         img_ratios=[1.0],
         flip=False,
         transforms=[
-            dict(type='CLAHE', clip_limit=2.0, tile_grid_size=(8, 8)),
+            dict(type='CLAHE', clip_limit=3.0, tile_grid_size=(8, 8)),
             # dict(type='Resize', ratio_range=(1.0, 1.0), keep_ratio=False),
             dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
             # dict(type='RandomFlip', flip_ratio=0.0),
@@ -138,14 +167,14 @@ data = dict(
 # load_from = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
 # Set up working dir to save files and logs.
-work_dir = '/root/mmsegmentation/hrnet_imgnet_CLAHE2_run'
+work_dir = '/root/mmsegmentation/unet_imgnet_CLAHE3_run'
 
 runner = dict(type='EpochBasedRunner', max_epochs=1000)
 log_config = dict(interval = 1,
     hooks=[
         dict(type='TextLoggerHook', by_epoch=True),
         # dict(type='TensorboardLoggerHook'),
-        dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='hrnet_last_run_visionary', resume='allow', anonymous='must'))
+        dict(type='WandbLoggerHook',  by_epoch=True, init_kwargs=dict(project='unet_last_run', resume='allow', anonymous='must'))
     ])
 evaluation = dict(interval = 1, pre_eval=True, save_best='mIoU', max_keep_ckpts=1)
 checkpoint_config = dict(by_epoch=True, interval = -1, save_last = False)
