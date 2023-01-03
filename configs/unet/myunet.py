@@ -167,7 +167,7 @@ data = dict(
 # load_from = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
 # Set up working dir to save files and logs.
-work_dir = '/root/mmsegmentation/unet_imgnet_CLAHE3_run'
+work_dir = '/root/mmsegmentation/unet_imgnet_CLAHE3_run_001'
 
 runner = dict(type='EpochBasedRunner', max_epochs=1000)
 log_config = dict(interval = 1,
@@ -189,6 +189,6 @@ lr_config = dict(policy='poly', power=0.9, min_lr=1e-1, by_epoch=True)
 # Set seed to facitate reproducing the result
 seed = 0
 set_random_seed(0, deterministic=False)
-gpu_ids = range(1, 2)
+gpu_ids = range(0, 1)
 
 workflow = [('train', 1), ('val', 1)]
