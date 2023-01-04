@@ -33,9 +33,15 @@ data_root = '/root/mmsegmentation/data/buildingfacade'
 img_dir = 'imgs'
 ann_dir = 'all_new_masks'
 
+# img_norm_cfg = dict(
+#     mean=[255*0.4780, 255*0.4511, 255*0.4137],
+#     std=[255*0.2429, 255*0.2352, 255*0.2338],
+#     to_rgb=True
+# )
+
 img_norm_cfg = dict(
-    mean=[255*0.4780, 255*0.4511, 255*0.4137],
-    std=[255*0.2429, 255*0.2352, 255*0.2338],
+    mean=[255*0.485, 255*0.456, 255*0.406],
+    std=[255*0.229, 255*0.224, 255*0.225],
     to_rgb=True
 )
 
@@ -43,6 +49,7 @@ crop_size = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
+    dict(type='CLAHE', clip_limit=3.0, tile_grid_size=(8, 8)),
     dict(type='Resize', img_scale=None, multiscale_mode='range', ratio_range=(0.5, 2.0), keep_ratio=False),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', flip_ratio=0.5),
@@ -56,6 +63,7 @@ train_pipeline = [
 val_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
+    dict(type='CLAHE', clip_limit=3.0, tile_grid_size=(8, 8)),
     dict(type='Resize', img_scale=None, ratio_range=(1.0, 1.0), keep_ratio=True),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', flip_ratio=0.0),
@@ -88,6 +96,7 @@ try_pipeline = [
         img_ratios=[1.0],
         flip=False,
         transforms=[
+            dict(type='CLAHE', clip_limit=2.0, tile_grid_size=(8, 8)),
             # dict(type='Resize', ratio_range=(1.0, 1.0), keep_ratio=False),
             dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
             # dict(type='RandomFlip', flip_ratio=0.0),
@@ -129,7 +138,7 @@ data = dict(
 # load_from = 'checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
 # Set up working dir to save files and logs.
-work_dir = '/root/mmsegmentation/deeplab_last_run_firm'
+work_dir = '/root/mmsegmentation/deeplab_imgnet_CLAHE_run'
 
 runner = dict(type='EpochBasedRunner', max_epochs=1000)
 log_config = dict(interval = 1,
