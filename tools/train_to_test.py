@@ -72,21 +72,21 @@ def main():
         cfg.model.auxiliary_head.ignore_index = 0
         cfg.model.auxiliary_head.loss_decode[0].avg_non_ignore = True
         cfg.model.auxiliary_head.loss_decode[1].ignore_index = 0
-        cfg.data.train.pipeline[3].ignore_index = 0
-        cfg.data.train.pipeline[5].seg_pad_val = 0
-        cfg.data.train.pipeline[8].seg_pad_val = 0
-        cfg.val_pipeline[3].ignore_index = 0
-        cfg.val_pipeline[6].seg_pad_val = 0
+        cfg.data.train.pipeline[4].ignore_index = 0
+        cfg.data.train.pipeline[6].seg_pad_val = 0
+        cfg.data.train.pipeline[9].seg_pad_val = 0
+        cfg.val_pipeline[4].ignore_index = 0
+        cfg.val_pipeline[7].seg_pad_val = 0
         cfg.data.val.type='BuildingFacadeBGDataset'
-        cfg.data.val.pipeline[2].transforms[0].ignore_index = 0
-        cfg.data.val.pipeline[2].transforms[2].seg_pad_val = 0
+        cfg.data.val.pipeline[2].transforms[1].ignore_index = 0
+        cfg.data.val.pipeline[2].transforms[3].seg_pad_val = 0
         cfg.data.test.type='BuildingFacadeBGDataset'
-        cfg.data.test.pipeline[2].transforms[0].ignore_index = 0
-        cfg.data.test.pipeline[2].transforms[2].seg_pad_val = 0
+        cfg.data.test.pipeline[2].transforms[1].ignore_index = 0
+        cfg.data.test.pipeline[2].transforms[3].seg_pad_val = 0
     # if args.crop_size:
     #     cfg.crop_size = (args.crop_size, args.crop_size)
     if args.keep_ratio:
-        cfg.data.train.pipeline[2].keep_ratio = True
+        cfg.data.train.pipeline[3].keep_ratio = True
         # cfg.val_pipeline[2].keep_ratio = True
     # if args.lr_scheduler:
     if args.momentum:
@@ -94,11 +94,11 @@ def main():
     if args.weight_decay:
         cfg.optimizer.weight_decay = args.weight_decay
 
-    cfg.work_dir = '/root/mmsegmentation/deeplab_last_run_firm'
+    cfg.work_dir = '/root/mmsegmentation/deeplab_imgnet_CLAHE_run'
 
     print(cfg.pretty_text)
 
-    cfg.dump('/root/mmsegmentation/configs/deeplabv3plus/mydeeplabv3plus_firm_test.py')
+    cfg.dump('/root/mmsegmentation/configs/deeplabv3plus/mydeeplabv3plus_imgnet_CLAHE_test.py')
 
 if __name__ == '__main__':
     main()
