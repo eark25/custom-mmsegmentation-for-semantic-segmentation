@@ -1,0 +1,20 @@
+{
+    "config": "/root/mmsegmentation/configs/hrnet/myhrnet_imgnet_CLAHE_test.py",
+    "metric": {
+        "aAcc": 0.7659999999999999,
+        "mIoU": 0.5539000000000001,
+        "mAcc": 0.6899,
+        "IoU.background": 0.5852000045776368,
+        "IoU.wall": 0.6329000091552734,
+        "IoU.floor": 0.43779998779296875,
+        "IoU.column": 0.35529998779296873,
+        "IoU.opening": 0.7262000274658204,
+        "IoU.facade/deco": 0.5856999969482422,
+        "Acc.background": 0.7472000122070312,
+        "Acc.wall": 0.7752999877929687,
+        "Acc.floor": 0.504900016784668,
+        "Acc.column": 0.5263000106811524,
+        "Acc.opening": 0.8387999725341797,
+        "Acc.facade/deco": 0.7470999908447266
+    }
+}

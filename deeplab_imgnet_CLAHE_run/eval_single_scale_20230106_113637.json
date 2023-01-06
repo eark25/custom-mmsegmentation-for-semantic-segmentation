@@ -1,0 +1,20 @@
+{
+    "config": "/root/mmsegmentation/configs/deeplabv3plus/mydeeplabv3plus_imgnet_CLAHE_test.py",
+    "metric": {
+        "aAcc": 0.7514,
+        "mIoU": 0.536,
+        "mAcc": 0.6784,
+        "IoU.background": 0.5415999984741211,
+        "IoU.wall": 0.605,
+        "IoU.floor": 0.4372999954223633,
+        "IoU.column": 0.316200008392334,
+        "IoU.opening": 0.7306999969482422,
+        "IoU.facade/deco": 0.5854000091552735,
+        "Acc.background": 0.7381999969482422,
+        "Acc.wall": 0.7358000183105469,
+        "Acc.floor": 0.5865999984741211,
+        "Acc.column": 0.41950000762939454,
+        "Acc.opening": 0.8251000213623046,
+        "Acc.facade/deco": 0.765199966430664
+    }
+}

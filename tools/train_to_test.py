@@ -94,7 +94,7 @@ def main():
     if args.weight_decay:
         cfg.optimizer.weight_decay = args.weight_decay
 
-    cfg.work_dir = '/root/mmsegmentation/deeplab_imgnet_CLAHE_run'
+    cfg.work_dir = '/root/mmsegmentation/deeplabv3plus_imgnet_CLAHE_run'
 
     print(cfg.pretty_text)
 

@@ -128,10 +128,10 @@ data = dict(
                 flip=False,
                 transforms=[
                     dict(type='CLAHE', clip_limit=3.0, tile_grid_size=(8, 8)),
-                    dict(
-                        type='RandomCrop',
-                        crop_size=(512, 512),
-                        cat_max_ratio=0.75),
+                    # dict(
+                    #     type='RandomCrop',
+                    #     crop_size=(512, 512),
+                    #     cat_max_ratio=0.75),
                     dict(
                         type='Normalize',
                         mean=[123.675, 116.28, 103.53],
@@ -139,7 +139,7 @@ data = dict(
                         to_rgb=True),
                     dict(
                         type='Pad',
-                        size=(512, 512),
+                        size=(1280, 1280),
                         pad_val=0,
                         seg_pad_val=255),
                     dict(

@@ -150,7 +150,7 @@ data = dict(
                 img_ratios=[1.0],
                 flip=False,
                 transforms=[
-                    dict(type='CLAHE', clip_limit=2.0, tile_grid_size=(8, 8)),
+                    dict(type='CLAHE', clip_limit=3.0, tile_grid_size=(8, 8)),
                     dict(
                         type='RandomCrop',
                         crop_size=(512, 512),
@@ -185,21 +185,21 @@ data = dict(
                 img_ratios=[1.0],
                 flip=False,
                 transforms=[
-                    dict(type='CLAHE', clip_limit=2.0, tile_grid_size=(8, 8)),
-                    dict(
-                        type='RandomCrop',
-                        crop_size=(512, 512),
-                        cat_max_ratio=0.75),
+                    dict(type='CLAHE', clip_limit=3.0, tile_grid_size=(8, 8)),
+                    # dict(
+                    #     type='RandomCrop',
+                    #     crop_size=(512, 512),
+                    #     cat_max_ratio=0.75),
                     dict(
                         type='Normalize',
                         mean=[123.675, 116.28, 103.53],
                         std=[58.395, 57.120000000000005, 57.375],
                         to_rgb=True),
-                    dict(
-                        type='Pad',
-                        size=(512, 512),
-                        pad_val=0,
-                        seg_pad_val=255),
+                    # dict(
+                    #     type='Pad',
+                    #     size=(512, 512),
+                    #     pad_val=0,
+                    #     seg_pad_val=255),
                     dict(
                         type='ImageToTensor', keys=['img', 'gt_semantic_seg']),
                     dict(type='Collect', keys=['img', 'gt_semantic_seg'])
@@ -264,7 +264,7 @@ try_pipeline = [
         img_ratios=[1.0],
         flip=False,
         transforms=[
-            dict(type='CLAHE', clip_limit=2.0, tile_grid_size=(8, 8)),
+            dict(type='CLAHE', clip_limit=3.0, tile_grid_size=(8, 8)),
             dict(type='RandomCrop', crop_size=(512, 512), cat_max_ratio=0.75),
             dict(
                 type='Normalize',
@@ -276,7 +276,7 @@ try_pipeline = [
             dict(type='Collect', keys=['img', 'gt_semantic_seg'])
         ])
 ]
-work_dir = '/root/mmsegmentation/deeplab_imgnet_CLAHE_run'
+work_dir = '/root/mmsegmentation/deeplabv3plus_imgnet_CLAHE_run'
 runner = dict(type='EpochBasedRunner', max_epochs=1000)
 seed = 0
 gpu_ids = range(1, 2)
