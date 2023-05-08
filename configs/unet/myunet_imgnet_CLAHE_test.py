@@ -139,7 +139,7 @@ data = dict(
                         to_rgb=True),
                     dict(
                         type='Pad',
-                        size=(1280, 1280),
+                        size=(1024, 1024),
                         pad_val=0,
                         seg_pad_val=255),
                     dict(

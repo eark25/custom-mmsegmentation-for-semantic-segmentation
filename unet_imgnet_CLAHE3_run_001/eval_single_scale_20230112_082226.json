@@ -1,0 +1,20 @@
+{
+    "config": "/root/mmsegmentation/configs/unet/myunet_imgnet_CLAHE_test.py",
+    "metric": {
+        "aAcc": 0.728,
+        "mIoU": 0.5058,
+        "mAcc": 0.6406000000000001,
+        "IoU.background": 0.4747999954223633,
+        "IoU.wall": 0.5893999862670899,
+        "IoU.floor": 0.40180000305175784,
+        "IoU.column": 0.2982999992370605,
+        "IoU.opening": 0.7290000152587891,
+        "IoU.facade/deco": 0.5415999984741211,
+        "Acc.background": 0.6501000213623047,
+        "Acc.wall": 0.7518000030517578,
+        "Acc.floor": 0.48139999389648436,
+        "Acc.column": 0.43709999084472656,
+        "Acc.opening": 0.8056999969482422,
+        "Acc.facade/deco": 0.7172000122070312
+    }
+}
